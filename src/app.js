@@ -18,6 +18,10 @@ app.use("/api/upload",require("./routes/uploadRoutes"));
 app.use("/api/dashboard",require("./routes/dashboardRoutes"));
 app.use("/api/public/inquiry",require("./routes/inquiryRoutes"));
 
+const shareRoutes = require("./routes/shareRoutes");
+
+app.use("/share", shareRoutes);
+
 app.get("/", (req, res) => {
   res.json({
     success: true,
