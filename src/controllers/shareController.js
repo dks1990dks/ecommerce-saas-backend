@@ -42,6 +42,10 @@ exports.productSharePage = async (req, res) => {
     const escapedProductName = escapeHtml(product.productName);
     const escapedStoreName = escapeHtml(store.storeName);
 
+    // Set cache headers - crawlers will cache the preview
+    res.setHeader('Cache-Control', 'public, max-age=3600, must-revalidate');
+    res.setHeader('X-Robots-Tag', 'noindex');
+
     res.send(`
 <!DOCTYPE html>
 <html lang="en">
@@ -70,8 +74,8 @@ ${twitterTags}
 <!-- Preload critical image for faster loading -->
 <link rel="preload" as="image" href="${optimizeImageUrl(image)}" />
 
-<!-- Redirect to frontend after meta tags are read -->
-<meta http-equiv="refresh" content="0;url=${frontendUrl}" />
+<!-- Redirect to frontend after meta tags are read (2 second delay for crawlers) -->
+<meta http-equiv="refresh" content="2;url=${frontendUrl}" />
 
 </head>
 
@@ -83,7 +87,7 @@ ${twitterTags}
 // Delay redirect to ensure crawlers can read meta tags
 setTimeout(function() {
   window.location.replace("${frontendUrl}");
-}, 100);
+}, 2100);
 </script>
 
 </body>
