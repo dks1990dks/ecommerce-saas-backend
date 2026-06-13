@@ -26,6 +26,9 @@ exports.productSharePage = async (req, res) => {
     const frontendUrl =
       `https://chipper-muffin-64e992.netlify.app/store/${storeSlug}/product/${productSlug}`;
 
+    const shareUrl =
+      `https://ecommerce-saas-backend.onrender.com/share/product/${storeSlug}/${productSlug}`;
+
     const image = product.images?.[0] || "";
 
     // Prepare meta tag data
@@ -33,7 +36,7 @@ exports.productSharePage = async (req, res) => {
       title: product.productName,
       description: product.description || "Check out our latest products",
       image: image,
-      url: frontendUrl,
+      url: shareUrl,
       siteName: store.storeName
     };
 
