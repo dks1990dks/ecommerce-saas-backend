@@ -1,5 +1,6 @@
 const Product = require("../models/Product");
 const Store = require("../models/Store");
+const { escapeHtml, optimizeImageUrl, generateOGTags, generateTwitterTags } = require("../utils/htmlUtils");
 
 exports.productSharePage = async (req, res) => {
   try {
@@ -25,42 +26,71 @@ exports.productSharePage = async (req, res) => {
     const frontendUrl =
       `https://chipper-muffin-64e992.netlify.app/store/${storeSlug}/product/${productSlug}`;
 
-    const image =
-      product.images?.[0] || "";
+    const image = product.images?.[0] || "";
+
+    // Prepare meta tag data
+    const metaData = {
+      title: product.productName,
+      description: product.description || "Check out our latest products",
+      image: image,
+      url: frontendUrl,
+      siteName: store.storeName
+    };
+
+    const ogTags = generateOGTags(metaData);
+    const twitterTags = generateTwitterTags(metaData);
+    const escapedProductName = escapeHtml(product.productName);
+    const escapedStoreName = escapeHtml(store.storeName);
 
     res.send(`
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 
-<title>${product.productName}</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
-<meta property="og:type" content="product" />
-<meta property="og:title" content="${product.productName}" />
-<meta property="og:description" content="${product.description || ""}" />
-<meta property="og:image" content="${image}" />
-<meta property="og:url" content="${frontendUrl}" />
+<title>${escapedProductName} | ${escapedStoreName}</title>
 
-<meta property="og:site_name" content="${store.storeName}" />
+<meta name="description" content="${escapeHtml(product.description || "Check out our latest products")}" />
+<meta name="author" content="${escapedStoreName}" />
+<meta name="keywords" content="${escapedProductName}, shop, products" />
 
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="${product.productName}" />
-<meta name="twitter:description" content="${product.description || ""}" />
-<meta name="twitter:image" content="${image}" />
+<!-- Open Graph Meta Tags for Facebook, WhatsApp, Telegram -->
+${ogTags}
+
+<!-- Twitter Card Meta Tags -->
+${twitterTags}
+
+<!-- Additional Meta Tags for better crawling -->
+<meta property="product:price:currency" content="USD" />
+<meta property="product:category" content="${escapedStoreName}" />
+
+<!-- Preload critical image for faster loading -->
+<link rel="preload" as="image" href="${optimizeImageUrl(image)}" />
+
+<!-- Redirect to frontend after meta tags are read -->
+<meta http-equiv="refresh" content="0;url=${frontendUrl}" />
 
 </head>
 
 <body>
 
+<p>Redirecting you to the product page...</p>
+
 <script>
-window.location.href="${frontendUrl}";
+// Delay redirect to ensure crawlers can read meta tags
+setTimeout(function() {
+  window.location.replace("${frontendUrl}");
+}, 100);
 </script>
 
 </body>
 </html>
 `);
   } catch (err) {
-    console.error(err);
+    console.error("Share page error:", err);
     res.status(500).send("Server Error");
   }
 };
