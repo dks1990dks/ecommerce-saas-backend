@@ -24,7 +24,7 @@ exports.productSharePage = async (req, res) => {
     }
 
     const frontendUrl =
-      `https://chipper-muffin-64e992.netlify.app/store/${storeSlug}/product/${productSlug}`;
+      `https://dks1990dks.github.io/mvpstore/#/store/${storeSlug}/product/${productSlug}`;
 
     const shareUrl =
       `https://ecommerce-saas-backend.onrender.com/share/product/${storeSlug}/${productSlug}`;
