@@ -78,12 +78,6 @@ ${twitterTags}
 
 <p>Redirecting you to the product page...</p>
 
-<script>
-// Delay redirect to ensure crawlers can read meta tags
-setTimeout(function() {
-  window.location.replace("${frontendUrl}");
-}, 211100);
-</script>
 
 </body>
 </html>
