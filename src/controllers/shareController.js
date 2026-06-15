@@ -24,10 +24,7 @@ exports.productSharePage = async (req, res) => {
     }
 
     const frontendUrl =
-      `https://dks1990dks.github.io/mvpstore/#/store/${storeSlug}/product/${productSlug}`;
-
-    const shareUrl =
-      `https://ecommerce-saas-backend.onrender.com/share/product/${storeSlug}/${productSlug}`;
+      `https://chipper-muffin-64e992.netlify.app/store/${storeSlug}/product/${productSlug}`;
 
     const image = product.images?.[0] || "";
 
@@ -36,7 +33,7 @@ exports.productSharePage = async (req, res) => {
       title: product.productName,
       description: product.description || "Check out our latest products",
       image: image,
-      url: shareUrl,
+      url: frontendUrl,
       siteName: store.storeName
     };
 
@@ -44,10 +41,6 @@ exports.productSharePage = async (req, res) => {
     const twitterTags = generateTwitterTags(metaData);
     const escapedProductName = escapeHtml(product.productName);
     const escapedStoreName = escapeHtml(store.storeName);
-
-    // Set cache headers - crawlers will cache the preview
-    res.setHeader('Cache-Control', 'public, max-age=3600, must-revalidate');
-    res.setHeader('X-Robots-Tag', 'noindex');
 
     res.send(`
 <!DOCTYPE html>
@@ -77,8 +70,8 @@ ${twitterTags}
 <!-- Preload critical image for faster loading -->
 <link rel="preload" as="image" href="${optimizeImageUrl(image)}" />
 
-<!-- Redirect to frontend after meta tags are read (2 second delay for crawlers) -->
-<meta http-equiv="refresh" content="2;url=${frontendUrl}" />
+<!-- Redirect to frontend after meta tags are read -->
+// <meta http-equiv="refresh" content="0;url=${frontendUrl}" />
 
 </head>
 
@@ -88,9 +81,9 @@ ${twitterTags}
 
 <script>
 // Delay redirect to ensure crawlers can read meta tags
-setTimeout(function() {
-  window.location.replace("${frontendUrl}");
-}, 2100);
+// setTimeout(function() {
+//   window.location.replace("${frontendUrl}");
+// }, 100);
 </script>
 
 </body>
