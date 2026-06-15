@@ -24,7 +24,7 @@ exports.productSharePage = async (req, res) => {
     }
 
     const frontendUrl =
-      `https://chipper-muffin-64e992.netlify.app/store/${storeSlug}/product/${productSlug}`;
+      `https://dks1990dks.github.io/mvpstore/store/${storeSlug}/product/${productSlug}`;
 
     const image = product.images?.[0] || "";
 
@@ -81,9 +81,9 @@ ${twitterTags}
 
 <script>
 // Delay redirect to ensure crawlers can read meta tags
-// setTimeout(function() {
-//   window.location.replace("${frontendUrl}");
-// }, 100);
+setTimeout(function() {
+  window.location.replace("${frontendUrl}");
+}, 211100);
 </script>
 
 </body>
