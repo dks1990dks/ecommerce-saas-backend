@@ -71,6 +71,7 @@ ${twitterTags}
 <link rel="preload" as="image" href="${optimizeImageUrl(image)}" />
 
 <!-- Redirect to frontend after meta tags are read -->
+<meta http-equiv="refresh" content="0;url=${frontendUrl}" />
 
 </head>
 
@@ -78,6 +79,12 @@ ${twitterTags}
 
 <p>Redirecting you to the product page...</p>
 
+<script>
+// Delay redirect to ensure crawlers can read meta tags
+setTimeout(function() {
+  window.location.replace("${frontendUrl}");
+}, 100);
+</script>
 
 </body>
 </html>
