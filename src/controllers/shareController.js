@@ -71,7 +71,6 @@ ${twitterTags}
 <link rel="preload" as="image" href="${optimizeImageUrl(image)}" />
 
 <!-- Redirect to frontend after meta tags are read -->
-// <meta http-equiv="refresh" content="0;url=${frontendUrl}" />
 
 </head>
 
