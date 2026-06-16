@@ -24,7 +24,7 @@ exports.productSharePage = async (req, res) => {
     }
 
     const frontendUrl =
-      `https://dks1990dks.github.io/mvpstore/store/${storeSlug}/product/${productSlug}`;
+      `https://dks1990dks.github.io/mvpstore/#/store/${storeSlug}/product/${productSlug}`;
 
     const image = product.images?.[0] || "";
 
