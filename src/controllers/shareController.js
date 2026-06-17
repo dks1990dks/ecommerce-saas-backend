@@ -49,6 +49,12 @@ exports.productSharePage = async (req, res) => {
     res.setHeader('Cache-Control', 'public, max-age=3600, must-revalidate');
     res.setHeader('X-Robots-Tag', 'noindex');
 
+    console.log("PRODUCT:", product.productName);
+console.log("IMAGE:", image);
+console.log("FRONTEND URL:", frontendUrl);
+console.log("STORE:", store.storeName);
+console.log("OG TAGS:", ogTags);
+
     res.send(`
 <!DOCTYPE html>
 <html lang="en">
