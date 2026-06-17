@@ -38,7 +38,7 @@ const optimizeImageUrl = (imageUrl, options = {}) => {
       height = 630,
       crop = "fill",
       quality = "auto",
-      format = "auto",
+      format = "jpg",
       gravity = "auto"
     } = options;
 
@@ -64,11 +64,12 @@ const generateOGTags = (data) => {
     image,
     url,
     siteName,
-    type = "product",
+    type = "website",
     locale = "en_US"
   } = data;
 
   const optimizedImage = optimizeImageUrl(image);
+  console.log("OG IMAGE:", optimizedImage);
 
   return `
     <meta property="og:type" content="${type}" />
