@@ -82,6 +82,7 @@ const generateOGTags = (data) => {
     <meta property="og:url" content="${url}" />
     <meta property="og:site_name" content="${escapeHtml(siteName)}" />
     <meta property="og:locale" content="${locale}" />
+    <meta property="og:image:alt" content="${escapeHtml(title)}" />
   `.trim();
 };
 
