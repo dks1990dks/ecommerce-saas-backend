@@ -54,6 +54,8 @@ console.log("IMAGE:", image);
 console.log("FRONTEND URL:", frontendUrl);
 console.log("STORE:", store.storeName);
 console.log("OG TAGS:", ogTags);
+    res.status(200);
+res.set("Cache-Control", "public, max-age=3600");
 
     res.send(`
 <!DOCTYPE html>
@@ -84,21 +86,16 @@ ${twitterTags}
 <link rel="preload" as="image" href="${optimizeImageUrl(image)}" />
 
 <!-- Redirect to frontend after meta tags are read (2 second delay for crawlers) -->
-<meta http-equiv="refresh" content="2;url=${frontendUrl}" />
 
 </head>
 
 <body>
+  <h1>shurfer</h1>
+  <p>Redirecting...</p>
 
-<p>Redirecting you to the product page...</p>
-
-<script>
-// Delay redirect to ensure crawlers can read meta tags
-setTimeout(function() {
-  window.location.replace("${frontendUrl}");
-}, 2100);
-</script>
-
+  <a href="frontendUrl">
+    View Product
+  </a>
 </body>
 </html>
 `);
