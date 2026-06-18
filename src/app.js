@@ -45,4 +45,17 @@ app.use((err, req, res, next) => {
   });
 });
 
+app.get("/fb-test", (req, res) => {
+  res.send(`
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <meta property="og:title" content="FB Test">
+        <meta property="og:description" content="Testing">
+      </head>
+      <body>OK</body>
+    </html>
+  `);
+});
+
 module.exports = app;
