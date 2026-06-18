@@ -63,6 +63,14 @@ Allow: /
 `);
 });
 
+app.get("/headers", (req, res) => {
+  res.json({
+    userAgent: req.headers["user-agent"],
+    ip: req.ip,
+    forwardedFor: req.headers["x-forwarded-for"],
+  });
+});
+
 app.use((req, res) => {
   res.status(404).json({
     success: false,
