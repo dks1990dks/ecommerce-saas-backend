@@ -93,9 +93,9 @@ ${twitterTags}
   <h1>shurfer</h1>
   <p>Redirecting...</p>
 
-  <a href="frontendUrl">
-    View Product
-  </a>
+  <a href="${frontendUrl}">
+  View Product
+</a>
 </body>
 </html>
 `);
