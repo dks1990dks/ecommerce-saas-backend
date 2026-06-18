@@ -58,4 +58,11 @@ app.get("/fb-test", (req, res) => {
   `);
 });
 
+app.get("/ua-test", (req, res) => {
+  res.json({
+    userAgent: req.headers["user-agent"],
+    ip: req.ip
+  });
+});
+
 module.exports = app;
