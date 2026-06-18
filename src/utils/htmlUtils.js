@@ -76,6 +76,7 @@ const generateOGTags = (data) => {
     <meta property="og:title" content="${escapeHtml(title)}" />
     <meta property="og:description" content="${escapeHtml(description)}" />
     <meta property="og:image" content="${optimizedImage}" />
+    <meta property="og:image:url" content="${optimizedImage}" />
     <meta property="og:image:secure_url" content="${optimizedImage}" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
