@@ -3,6 +3,11 @@ const Store = require("../models/Store");
 const { escapeHtml, optimizeImageUrl, generateOGTags, generateTwitterTags } = require("../utils/htmlUtils");
 
 exports.productSharePage = async (req, res) => {
+  console.log("=== SHARE REQUEST ===");
+  console.log("UA:", req.headers["user-agent"]);
+  console.log("Store:", req.params.storeSlug);
+  console.log("Product:", req.params.productSlug);
+
   try {
     const { storeSlug, productSlug } = req.params;
 
