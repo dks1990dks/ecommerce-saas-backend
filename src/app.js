@@ -49,6 +49,20 @@ app.get("/ua-test", (req, res) => {
   });
 });
 
+app.get("/robots.txt", (req, res) => {
+  res.type("text/plain");
+  res.send(`
+User-agent: *
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Facebot
+Allow: /
+`);
+});
+
 app.use((req, res) => {
   res.status(404).json({
     success: false,
