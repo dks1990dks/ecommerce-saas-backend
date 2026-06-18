@@ -64,7 +64,7 @@ const generateOGTags = (data) => {
     image,
     url,
     siteName,
-    type = "website",
+    type: "product",
     locale = "en_US"
   } = data;
 
