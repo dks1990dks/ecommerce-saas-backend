@@ -29,22 +29,6 @@ app.get("/", (req, res) => {
   });
 });
 
-app.use((req, res) => {
-  res.status(404).json({
-    success: false,
-    message: "Route not found"
-  });
-});
-
-app.use((err, req, res, next) => {
-  console.error(err);
-
-  res.status(err.status || 500).json({
-    success: false,
-    message: err.message || "Internal Server Error"
-  });
-});
-
 app.get("/fb-test", (req, res) => {
   res.send(`
     <!DOCTYPE html>
@@ -64,5 +48,23 @@ app.get("/ua-test", (req, res) => {
     ip: req.ip
   });
 });
+
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: "Route not found"
+  });
+});
+
+app.use((err, req, res, next) => {
+  console.error(err);
+
+  res.status(err.status || 500).json({
+    success: false,
+    message: err.message || "Internal Server Error"
+  });
+});
+
+
 
 module.exports = app;
