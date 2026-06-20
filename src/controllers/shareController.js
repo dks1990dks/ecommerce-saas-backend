@@ -66,41 +66,77 @@ res.set("Cache-Control", "public, max-age=3600");
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>${escapedProductName} | ${escapedStoreName}</title>
 
-<title>${escapedProductName} | ${escapedStoreName}</title>
+  <meta name="description" content="${escapeHtml(product.description || "Check out our latest products")}" />
+  <meta name="author" content="${escapedStoreName}" />
+  <meta name="keywords" content="${escapedProductName}, shop, products" />
 
-<meta name="description" content="${escapeHtml(product.description || "Check out our latest products")}" />
-<meta name="author" content="${escapedStoreName}" />
-<meta name="keywords" content="${escapedProductName}, shop, products" />
+  ${ogTags}
 
-<!-- Open Graph Meta Tags for Facebook, WhatsApp, Telegram -->
-${ogTags}
+  ${twitterTags}
 
-<!-- Twitter Card Meta Tags -->
-${twitterTags}
+  <meta property="product:price:currency" content="USD" />
+  <meta property="product:category" content="${escapedStoreName}" />
 
-<!-- Additional Meta Tags for better crawling -->
-<meta property="product:price:currency" content="USD" />
-<meta property="product:category" content="${escapedStoreName}" />
+  <link rel="preload" as="image" href="${optimizeImageUrl(image)}" />
 
-<!-- Preload critical image for faster loading -->
-<link rel="preload" as="image" href="${optimizeImageUrl(image)}" />
+  <meta http-equiv="refresh" content="2;url=${frontendUrl}" />
 
-<!-- Redirect to frontend after meta tags are read (2 second delay for crawlers) -->
+  <script>
+    window.location.href = "${frontendUrl}";
+  </script>
 
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f9fafb;
+      color: #1f2937;
+    }
+    .container {
+      text-align: center;
+    }
+    .spinner {
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid #3b82f6;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 16px;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    a {
+      color: #3b82f6;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 
 <body>
-  <h1>shurfer</h1>
-  <p>Redirecting...</p>
-
-  <a href="${frontendUrl}">
-  View Product
-</a>
+  <div class="container">
+    <div class="spinner"></div>
+    <h1>Opening ${escapedProductName}...</h1>
+    <p>Redirecting you to ${escapedStoreName}.</p>
+    <p><small>Not working? <a href="${frontendUrl}">Click here</a></small></p>
+  </div>
 </body>
 </html>
 `);
