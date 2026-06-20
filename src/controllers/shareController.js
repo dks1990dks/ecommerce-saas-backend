@@ -66,78 +66,41 @@ res.set("Cache-Control", "public, max-age=3600");
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
-  <title>${escapedProductName} | ${escapedStoreName}</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
-  <meta name="description" content="${escapeHtml(product.description || "Check out our latest products")}" />
-  <meta name="author" content="${escapedStoreName}" />
-  <meta name="keywords" content="${escapedProductName}, shop, products" />
+<title>${escapedProductName} | ${escapedStoreName}</title>
 
-  ${ogTags}
+<meta name="description" content="${escapeHtml(product.description || "Check out our latest products")}" />
+<meta name="author" content="${escapedStoreName}" />
+<meta name="keywords" content="${escapedProductName}, shop, products" />
 
-  ${twitterTags}
+<!-- Open Graph Meta Tags for Facebook, WhatsApp, Telegram -->
+${ogTags}
 
-  <meta property="product:price:currency" content="USD" />
-  <meta property="product:category" content="${escapedStoreName}" />
+<!-- Twitter Card Meta Tags -->
+${twitterTags}
 
-  <link rel="preload" as="image" href="${optimizeImageUrl(image)}" />
+<!-- Additional Meta Tags for better crawling -->
+<meta property="product:price:currency" content="USD" />
+<meta property="product:category" content="${escapedStoreName}" />
 
-  <meta http-equiv="refresh" content="3;url=${frontendUrl}" />
+<!-- Preload critical image for faster loading -->
+<link rel="preload" as="image" href="${optimizeImageUrl(image)}" />
 
-  <script>
-    setTimeout(function() {
-      window.location.href = "${frontendUrl}";
-    }, 3000); // 3000 milliseconds = 3 seconds
-  </script>
+<!-- Redirect to frontend after meta tags are read (2 second delay for crawlers) -->
 
-  <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-      background-color: #f9fafb;
-      color: #1f2937;
-    }
-    .container {
-      text-align: center;
-    }
-    .spinner {
-      border: 3px solid #f3f3f3;
-      border-top: 3px solid #3b82f6;
-      border-radius: 50%;
-      width: 28px;
-      height: 28px;
-      animation: spin 1s linear infinite;
-      margin: 0 auto 16px;
-    }
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    a {
-      color: #3b82f6;
-      text-decoration: none;
-      font-weight: 500;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
-  </style>
 </head>
 
 <body>
-  <div class="container">
-    <div class="spinner"></div>
-    <h1>Opening ${escapedProductName}...</h1>
-    <p>Taking you to ${escapedStoreName} in a moment.</p>
-    <p><small>Taking too long? <a href="${frontendUrl}">Click here to open immediately</a></small></p>
+<div class="container">
+<div class="spinner"></div>
+  <h1>Opening ${escapedProductName}...</h1>
+  <p>Redirecting you to ${escapedStoreName}.</p>
+
+  <p><small>Not working? <a href="${frontendUrl}">Click here</a></small></p>
   </div>
 </body>
 </html>
