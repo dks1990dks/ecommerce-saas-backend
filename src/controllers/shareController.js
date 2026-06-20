@@ -85,15 +85,17 @@ res.set("Cache-Control", "public, max-age=3600");
 
   <link rel="preload" as="image" href="${optimizeImageUrl(image)}" />
 
-  <meta http-equiv="refresh" content="2;url=${frontendUrl}" />
+  <meta http-equiv="refresh" content="3;url=${frontendUrl}" />
 
   <script>
-    window.location.href = "${frontendUrl}";
+    setTimeout(function() {
+      window.location.href = "${frontendUrl}";
+    }, 3000); // 3000 milliseconds = 3 seconds
   </script>
 
   <style>
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -110,8 +112,8 @@ res.set("Cache-Control", "public, max-age=3600");
       border: 3px solid #f3f3f3;
       border-top: 3px solid #3b82f6;
       border-radius: 50%;
-      width: 24px;
-      height: 24px;
+      width: 28px;
+      height: 28px;
       animation: spin 1s linear infinite;
       margin: 0 auto 16px;
     }
@@ -134,8 +136,8 @@ res.set("Cache-Control", "public, max-age=3600");
   <div class="container">
     <div class="spinner"></div>
     <h1>Opening ${escapedProductName}...</h1>
-    <p>Redirecting you to ${escapedStoreName}.</p>
-    <p><small>Not working? <a href="${frontendUrl}">Click here</a></small></p>
+    <p>Taking you to ${escapedStoreName} in a moment.</p>
+    <p><small>Taking too long? <a href="${frontendUrl}">Click here to open immediately</a></small></p>
   </div>
 </body>
 </html>
