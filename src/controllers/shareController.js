@@ -11,32 +11,26 @@ exports.productSharePage = async (req, res) => {
   try {
     const { storeSlug, productSlug } = req.params;
 
-    const store = await Store.findOne({
-      slug: storeSlug,
-    });
-
+    // 1. Fetch Store
+    const store = await Store.findOne({ slug: storeSlug });
     if (!store) {
       return res.status(404).send("Store not found");
     }
 
+    // 2. Fetch Product
     const product = await Product.findOne({
       storeId: store._id,
       slug: productSlug,
     });
-
     if (!product) {
       return res.status(404).send("Product not found");
     }
 
-    const frontendUrl =
-      `https://dks1990dks.github.io/mvpstore/#/store/${storeSlug}/product/${productSlug}`;
-
-    const shareUrl =
-      `https://ecommerce-saas-backend.onrender.com/share/product/${storeSlug}/${productSlug}`;
-
+    // 3. Build URLs & Meta Data
+    const frontendUrl = `https://dks1990dks.github.io/mvpstore/#/store/${storeSlug}/product/${productSlug}`;
+    const shareUrl = `https://ecommerce-saas-backend.onrender.com/share/product/${storeSlug}/${productSlug}`;
     const image = product.images?.[0] || "";
 
-    // Prepare meta tag data
     const metaData = {
       title: product.productName,
       description: product.description || "Check out our latest products",
@@ -50,61 +44,59 @@ exports.productSharePage = async (req, res) => {
     const escapedProductName = escapeHtml(product.productName);
     const escapedStoreName = escapeHtml(store.storeName);
 
-    // Set cache headers - crawlers will cache the preview
+    // 4. Set Headers (Optimized Caching & SEO)
     res.setHeader('Cache-Control', 'public, max-age=3600, must-revalidate');
     res.setHeader('X-Robots-Tag', 'noindex');
 
     console.log("PRODUCT:", product.productName);
-console.log("IMAGE:", image);
-console.log("FRONTEND URL:", frontendUrl);
-console.log("STORE:", store.storeName);
-console.log("OG TAGS:", ogTags);
-    res.status(200);
-res.set("Cache-Control", "public, max-age=3600");
+    console.log("IMAGE:", image);
+    console.log("FRONTEND URL:", frontendUrl);
+    console.log("STORE:", store.storeName);
+    console.log("OG TAGS:", ogTags);
 
-    res.send(`
+    // 5. Send Dynamic HTML Response
+    res.status(200).send(`
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>${escapedProductName} | ${escapedStoreName}</title>
+    <meta name="description" content="${escapeHtml(product.description || "Check out our latest products")}" />
+    <meta name="author" content="${escapedStoreName}" />
+    <meta name="keywords" content="${escapedProductName}, shop, products" />
 
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <!-- Open Graph Meta Tags for Facebook, WhatsApp, Telegram -->
+    ${ogTags}
 
-<title>${escapedProductName} | ${escapedStoreName}</title>
+    <!-- Twitter Card Meta Tags -->
+    ${twitterTags}
 
-<meta name="description" content="${escapeHtml(product.description || "Check out our latest products")}" />
-<meta name="author" content="${escapedStoreName}" />
-<meta name="keywords" content="${escapedProductName}, shop, products" />
+    <!-- Additional Meta Tags for better crawling -->
+    <meta property="product:price:currency" content="USD" />
+    <meta property="product:category" content="${escapedStoreName}" />
 
-<!-- Open Graph Meta Tags for Facebook, WhatsApp, Telegram -->
-${ogTags}
+    <!-- Preload critical image for faster loading -->
+    <link rel="preload" as="image" href="${optimizeImageUrl(image)}" />
 
-<!-- Twitter Card Meta Tags -->
-${twitterTags}
-
-<!-- Additional Meta Tags for better crawling -->
-<meta property="product:price:currency" content="USD" />
-<meta property="product:category" content="${escapedStoreName}" />
-
-<!-- Preload critical image for faster loading -->
-<link rel="preload" as="image" href="${optimizeImageUrl(image)}" />
-
-<!-- Redirect to frontend after meta tags are read (2 second delay for crawlers) -->
-
+    <!-- Redirect to frontend after meta tags are read (2 second delay for crawlers) -->
+    <script>
+      setTimeout(() => {
+        window.location.href = "${frontendUrl}";
+      }, 2000);
+    </script>
 </head>
-
 <body>
-<div class="container">
-<div class="spinner"></div>
-  <h1>Opening ${escapedProductName}...</h1>
-  <p>Redirecting you to ${escapedStoreName}.</p>
-
-  <p><small>Not working? <a href="${frontendUrl}">Click here</a></small></p>
-  </div>
+    <div class="container">
+        <div class="spinner"></div>
+        <h1>Opening ${escapedProductName}...</h1>
+        <p>Redirecting you to ${escapedStoreName}.</p>
+        <p><small>Not working? <a href="${frontendUrl}">Click here</a></small></p>
+    </div>
 </body>
 </html>
-`);
+    `);
   } catch (err) {
     console.error("Share page error:", err);
     res.status(500).send("Server Error");
